@@ -1,0 +1,569 @@
+{
+	"info": {
+		"_postman_id": "9a40cf93-ed2d-4358-8935-5c8756bcfe56",
+		"name": "RTF_APIs_Demo_Dev",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AssetsMetadata",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "86a48121417e4b978ca0cb1fe19ce631",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "c1590bE9519B4Bd49718d3c27B86Fb83",
+						"type": "text"
+					},
+					{
+						"key": "correlationId",
+						"value": "1234567891",
+						"type": "text"
+					},
+					{
+						"key": "applicationName",
+						"value": "Connect",
+						"type": "text"
+					},
+					{
+						"key": "embedImage",
+						"value": "Y",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://rtf-assets-exp-api-dev.beamsuntory.com/api/assets?filename=zz191012762_02.jpg",
+					"protocol": "https",
+					"host": [
+						"rtf-assets-exp-api-dev",
+						"beamsuntory",
+						"com"
+					],
+					"path": [
+						"api",
+						"assets"
+					],
+					"query": [
+						{
+							"key": "filename",
+							"value": "zz191012762_02.jpg"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sharepoint",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "86a48121417e4b978ca0cb1fe19ce631",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "c1590bE9519B4Bd49718d3c27B86Fb83",
+						"type": "text"
+					},
+					{
+						"key": "correlationId",
+						"value": "1234567895",
+						"type": "text"
+					},
+					{
+						"key": "applicationName",
+						"value": "Connect",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productName\": \"zz191012762_02.jpg\",\r\n    \"id\": \"7da4daa8-477b-4024-a5d3-d2b517b1f237\",\r\n    \"brand\": \"Cruzan\",\r\n    \"imageUrl\": \"https://beamsuntory.widen.net/content/jgowlnv0zq/png/zz191012762_02.png?w=250&h=250&position=c&color=ffffff00&quality=80&u=k6etlc\",\r\n    \"assetUrl\": \"https://dal.beamsuntory.com/dam/assetdetails/asset:7da4daa8-477b-4024-a5d3-d2b517b1f237/false?inav=false\",\r\n    \"categoriesAndSubsets\": \"\",\r\n    \"region\": \"Americas\",\r\n    \"countriesList\": null,\r\n    \"creationDate\": \"2020-01-10T06:41:21Z\",\r\n    \"lastUpdatedDate\": \"2020-01-18T02:28:47Z\",\r\n    \"spiritCategory\": \"Rum\",\r\n    \"assetType\": \"Master Visual\",\r\n    \"collection\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://rtf-assets-exp-api-dev.beamsuntory.com/api/sharepoint",
+					"protocol": "https",
+					"host": [
+						"rtf-assets-exp-api-dev",
+						"beamsuntory",
+						"com"
+					],
+					"path": [
+						"api",
+						"sharepoint"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Brands",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "86a48121417e4b978ca0cb1fe19ce631",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "c1590bE9519B4Bd49718d3c27B86Fb83",
+						"type": "text"
+					},
+					{
+						"key": "correlationId",
+						"value": "12345678932911",
+						"type": "text"
+					},
+					{
+						"key": "applicationName",
+						"value": "Connect",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://rtf-assets-exp-api-dev.beamsuntory.com/api/brands?brand=Toki",
+					"protocol": "http",
+					"host": [
+						"rtf-assets-exp-api-dev",
+						"beamsuntory",
+						"com"
+					],
+					"path": [
+						"api",
+						"brands"
+					],
+					"query": [
+						{
+							"key": "brand",
+							"value": "Toki"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Collections",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "86a48121417e4b978ca0cb1fe19ce631",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "c1590bE9519B4Bd49718d3c27B86Fb83",
+						"type": "text"
+					},
+					{
+						"key": "correlationId",
+						"value": "123456789211",
+						"type": "text"
+					},
+					{
+						"key": "applicationName",
+						"value": "Connect",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://rtf-assets-exp-api-dev.beamsuntory.com/api/collections?collection=2019 POS Images",
+					"protocol": "https",
+					"host": [
+						"rtf-assets-exp-api-dev",
+						"beamsuntory",
+						"com"
+					],
+					"path": [
+						"api",
+						"collections"
+					],
+					"query": [
+						{
+							"key": "collection",
+							"value": "2019 POS Images"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Status",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "86a48121417e4b978ca0cb1fe19ce631",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "c1590bE9519B4Bd49718d3c27B86Fb83",
+						"type": "text"
+					},
+					{
+						"key": "correlationId",
+						"value": "1234567894",
+						"type": "text"
+					},
+					{
+						"key": "applicationName",
+						"value": "Connect",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://rtf-assets-exp-api-dev.beamsuntory.com/api/status?id=1234567892711",
+					"protocol": "https",
+					"host": [
+						"rtf-assets-exp-api-dev",
+						"beamsuntory",
+						"com"
+					],
+					"path": [
+						"api",
+						"status"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1234567892711"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Collections-CDC-updatedDate",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "86a48121417e4b978ca0cb1fe19ce631",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "c1590bE9519B4Bd49718d3c27B86Fb83",
+						"type": "text"
+					},
+					{
+						"key": "correlationId",
+						"value": "123456789293",
+						"type": "text"
+					},
+					{
+						"key": "applicationName",
+						"value": "Connect",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://rtf-assets-exp-api-dev.beamsuntory.com/api/collections?collection=2022 Buy VAPs&updatedDate=du:[01/01/2021 to 01/31/2022]",
+					"protocol": "https",
+					"host": [
+						"rtf-assets-exp-api-dev",
+						"beamsuntory",
+						"com"
+					],
+					"path": [
+						"api",
+						"collections"
+					],
+					"query": [
+						{
+							"key": "collection",
+							"value": "2022 Buy VAPs"
+						},
+						{
+							"key": "updatedDate",
+							"value": "du:[01/01/2021 to 01/31/2022]"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Collections-CDC-releaseDate",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "86a48121417e4b978ca0cb1fe19ce631",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "c1590bE9519B4Bd49718d3c27B86Fb83",
+						"type": "text"
+					},
+					{
+						"key": "correlationId",
+						"value": "123456789299",
+						"type": "text"
+					},
+					{
+						"key": "applicationName",
+						"value": "Connect",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://rtf-assets-exp-api-dev.beamsuntory.com/api/collections?collection=2022 Buy VAPs&releaseDate=rd:[before 01/01/2022]",
+					"protocol": "https",
+					"host": [
+						"rtf-assets-exp-api-dev",
+						"beamsuntory",
+						"com"
+					],
+					"path": [
+						"api",
+						"collections"
+					],
+					"query": [
+						{
+							"key": "collection",
+							"value": "2022 Buy VAPs"
+						},
+						{
+							"key": "releaseDate",
+							"value": "rd:[before 01/01/2022]"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Collections-CDC-expirationDate",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "86a48121417e4b978ca0cb1fe19ce631",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "c1590bE9519B4Bd49718d3c27B86Fb83",
+						"type": "text"
+					},
+					{
+						"key": "correlationId",
+						"value": "1234567892991",
+						"type": "text"
+					},
+					{
+						"key": "applicationName",
+						"value": "Connect",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://rtf-assets-exp-api-dev.beamsuntory.com/api/collections?collection=2022 Buy VAPs&expirationDate=(ed:[after 01/01/2021] or ed:(isempty))",
+					"protocol": "https",
+					"host": [
+						"rtf-assets-exp-api-dev",
+						"beamsuntory",
+						"com"
+					],
+					"path": [
+						"api",
+						"collections"
+					],
+					"query": [
+						{
+							"key": "collection",
+							"value": "2022 Buy VAPs"
+						},
+						{
+							"key": "expirationDate",
+							"value": "(ed:[after 01/01/2021] or ed:(isempty))"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Brands-CDC-updatedDate",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "86a48121417e4b978ca0cb1fe19ce631",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "c1590bE9519B4Bd49718d3c27B86Fb83",
+						"type": "text"
+					},
+					{
+						"key": "correlationId",
+						"value": "12345678937",
+						"type": "text"
+					},
+					{
+						"key": "applicationName",
+						"value": "Connect",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://rtf-assets-exp-api-dev.beamsuntory.com/api/brands?brand=Toki&updatedDate=du:[01/01/2021 to 01/31/2022]",
+					"protocol": "https",
+					"host": [
+						"rtf-assets-exp-api-dev",
+						"beamsuntory",
+						"com"
+					],
+					"path": [
+						"api",
+						"brands"
+					],
+					"query": [
+						{
+							"key": "brand",
+							"value": "Toki"
+						},
+						{
+							"key": "updatedDate",
+							"value": "du:[01/01/2021 to 01/31/2022]"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Brands-CDC-expirationDate",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "86a48121417e4b978ca0cb1fe19ce631",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "c1590bE9519B4Bd49718d3c27B86Fb83",
+						"type": "text"
+					},
+					{
+						"key": "correlationId",
+						"value": "12345678939",
+						"type": "text"
+					},
+					{
+						"key": "applicationName",
+						"value": "Connect",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://rtf-assets-exp-api-dev.beamsuntory.com/api/brands?brand=Toki&expirationDate=(ed:[after 01/01/2021] or ed:(isempty))",
+					"protocol": "https",
+					"host": [
+						"rtf-assets-exp-api-dev",
+						"beamsuntory",
+						"com"
+					],
+					"path": [
+						"api",
+						"brands"
+					],
+					"query": [
+						{
+							"key": "brand",
+							"value": "Toki"
+						},
+						{
+							"key": "expirationDate",
+							"value": "(ed:[after 01/01/2021] or ed:(isempty))"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Brands-CDC-releaseDate",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "86a48121417e4b978ca0cb1fe19ce631",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "c1590bE9519B4Bd49718d3c27B86Fb83",
+						"type": "text"
+					},
+					{
+						"key": "correlationId",
+						"value": "1234567893991",
+						"type": "text"
+					},
+					{
+						"key": "applicationName",
+						"value": "Connect",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://rtf-assets-exp-api-dev.beamsuntory.com/api/brands?brand=Toki&releaseDate=rd:[before 01/01/2022]",
+					"protocol": "https",
+					"host": [
+						"rtf-assets-exp-api-dev",
+						"beamsuntory",
+						"com"
+					],
+					"path": [
+						"api",
+						"brands"
+					],
+					"query": [
+						{
+							"key": "brand",
+							"value": "Toki"
+						},
+						{
+							"key": "releaseDate",
+							"value": "rd:[before 01/01/2022]"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

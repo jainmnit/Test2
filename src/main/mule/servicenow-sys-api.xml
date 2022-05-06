@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="servicenow-sys-apiFlow" doc:id="e13205d2-be23-4be6-a2f0-8c518b872917" >
+		<http:listener doc:name="Listener" doc:id="a450c0cc-7c7b-423c-a7ad-3d04f5185404" path="${listnerpath}" config-ref="HTTP_Listener_config"/>
+		<ee:transform doc:name="requestPayload" doc:id="caec5b68-7c0b-4148-a48b-0ed3750c68aa" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json 
+---
+{
+                             active: "true",
+                             caller_id: "admin",
+                             //comments: if (payload.comments != null ) payload.comments else null,
+                             description: payload.errorDetails[0].message ++ " in " ++ payload.apiName ++ " for correlationId: " ++ payload.correlationId ++ " that got processed at " ++ payload.timestamp,
+                             priority: 3,
+                             short_description: payload.errorDetails[0].reason ++ " in " ++ payload.apiName,
+                             state: "New",
+                             notify: 1, 
+                             urgency: 3,
+                             severity: 3,
+                             correlation_id: correlationId,
+                             u_impacted_user:"admin",
+                             region:"US",
+                             location:"",
+                             impact:"3",
+                             contact_type: "Email",
+                             applicationcategory:"",
+                             configurationitem:"",
+                             preferred_contact_method :"",                        
+                             category : "Job Management",
+                             subcategory:"Job abended",
+                             assignment_group:"Beam-Global Apps-Development",   
+                             assignment_2:"admin"            
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="createSnowIncident" doc:id="83453315-82bb-4355-8052-d03c8d386477" name="sf-create-servicenow-incident-http-call"/>
+	</flow>
+	              <sub-flow name="sf-create-servicenow-incident-http-call" doc:id="9c529bbe-5190-4465-a62a-a0f999f18251">
+                             <http:request method="POST" doc:name="HTTP Post:Servicenow create incident" doc:id="2484cb0d-74ab-4a21-9989-475ed0e34fa4"
+                                           sendCorrelationId="ALWAYS" path="${servicenow.request.path}" config-ref="SERVICENOW_REQUEST_CONFIG">
+			<reconnect frequency="${reconnection.frequency}" count="${reconnection.attempts}" />
+
+                             </http:request>
+                             <ee:transform doc:name="DW:Parse response" doc:id="38a0cc3e-fcda-4d5d-94dc-4398800035cc">
+                                           <ee:message>
+                                                          <ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+sysId: payload.result.sys_id,
+number :payload.result.number
+//incidentUrl : p('servicenow.incident.url') ++ payload.result.sys_id
+}]]></ee:set-payload>
+                                           </ee:message>
+                                           <ee:variables>
+                                           </ee:variables>
+                             </ee:transform>
+                             <logger level="INFO" doc:name="End logger to create incident" doc:id="393fe243-9437-43dd-8083-8b774a38648c" message="#[payload]" />
+              </sub-flow>
+	<flow name="servicenow-sys-healthcheck" doc:id="f2fda0c0-ee4b-490d-88f0-ba4ac34b785a" >
+		<http:listener doc:name="Listener" doc:id="8a722eb4-b379-4ef4-b69b-5bee0d021d36" config-ref="HTTP_Listener_config" path="/"/>
+		<set-payload value="UP" doc:name="Set Payload" doc:id="37ecd999-4a93-4d4f-b528-bbd8fb14de8c" />
+	</flow>
+</mule>

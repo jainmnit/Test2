@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="efdb9850-2352-46dd-b859-7e9246742c5d" >
+		<http:listener-connection host="0.0.0.0" port="${listnerport}" />
+	</http:listener-config>
+	<http:request-config name="SERVICENOW_REQUEST_CONFIG" doc:name="HTTP Request configuration" doc:id="c1a52941-29f0-496a-b75e-3a20e2488bae" basePath="${servicenow.request.basepath}">
+		<http:request-connection protocol="HTTPS" host="${servicenow.request.host}">
+			<http:authentication >
+				<http:basic-authentication username="${servicenow.request.username}" password="${secure::password}" />
+			</http:authentication>
+		</http:request-connection>
+	</http:request-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="17d2b497-b9ab-4483-9f3c-4d4304b724a4" file="servicenow-sys-config-${mule.env}.properties" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="16a9d222-4308-4c0c-b3c8-98e124831a3a" file="servicenow-sys-config-${mule.env}-secure.properties" key="${key}" >
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
+	</mule>
