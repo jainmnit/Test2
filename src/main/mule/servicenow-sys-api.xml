@@ -1,71 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:error-handler-plugin="http://www.mulesoft.org/schema/mule/error-handler-plugin" xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
+http://www.mulesoft.org/schema/mule/error-handler-plugin http://www.mulesoft.org/schema/mule/error-handler-plugin/current/mule-error-handler-plugin.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+	<flow name="assets-exp-api-main" doc:id="5732e371-bc2f-4b6f-88fe-6d900c3526f5">
+        <http:listener config-ref="assets-exp-api-httpListenerConfig" path="${listnerbasepath}">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="assets-exp-api-config" doc:id="8da03675-f91b-4c41-8523-3b08489d1fa4"/>
+		<error-handler ref="assets-exp-common-error-handler-api" />
+    </flow>
+    <flow name="assets-exp-api-console">
+        <http:listener config-ref="assets-exp-api-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="assets-exp-api-config" />
+		<error-handler ref="assets-exp-common-error-handler-api" />
+    </flow>
+	<flow name="get:\assets:assets-exp-api-config">
+		<json-logger:logger doc:name="startTracePoint" doc:id="59a1fe58-d275-4505-9083-1acc9e44ef2a" config-ref="JSON_Logger_Config" message="Before Assets Call"/>
+		<flow-ref doc:name="getAssets" doc:id="0301e503-a5f3-4dd0-b215-2b4b7334cf93" name="sf-getAssets"/>
+		<json-logger:logger doc:name="endTracePoint" doc:id="554989c8-949e-48c1-805c-1be854e3750b" config-ref="JSON_Logger_Config" message="After Assets Call" tracePoint="END"/>
+		<error-handler ref="assets-exp-common-error-handler-api" />
+    </flow>
 
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<flow name="servicenow-sys-apiFlow" doc:id="e13205d2-be23-4be6-a2f0-8c518b872917" >
-		<http:listener doc:name="Listener" doc:id="a450c0cc-7c7b-423c-a7ad-3d04f5185404" path="${listnerpath}" config-ref="HTTP_Listener_config"/>
-		<ee:transform doc:name="requestPayload" doc:id="caec5b68-7c0b-4148-a48b-0ed3750c68aa" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json 
----
-{
-                             active: "true",
-                             caller_id: "admin",
-                             //comments: if (payload.comments != null ) payload.comments else null,
-                             description: payload.errorDetails[0].message ++ " in " ++ payload.apiName ++ " for correlationId: " ++ payload.correlationId ++ " that got processed at " ++ payload.timestamp,
-                             priority: 3,
-                             short_description: payload.errorDetails[0].reason ++ " in " ++ payload.apiName,
-                             state: "New",
-                             notify: 1, 
-                             urgency: 3,
-                             severity: 3,
-                             correlation_id: correlationId,
-                             u_impacted_user:"admin",
-                             region:"US",
-                             location:"",
-                             impact:"3",
-                             contact_type: "Email",
-                             applicationcategory:"",
-                             configurationitem:"",
-                             preferred_contact_method :"",                        
-                             category : "Job Management",
-                             subcategory:"Job abended",
-                             assignment_group:"Beam-Global Apps-Development",   
-                             assignment_2:"admin"            
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<flow-ref doc:name="createSnowIncident" doc:id="83453315-82bb-4355-8052-d03c8d386477" name="sf-create-servicenow-incident-http-call"/>
+	<flow name="get:\brands:assets-exp-api-config">
+		<json-logger:logger doc:name="startTracePoint" doc:id="3ab6c164-70ad-4aaa-ab66-76b7a6cdba53" config-ref="JSON_Logger_Config" message="Before Brands Call"/>
+		<flow-ref doc:name="getBrands" doc:id="d701595c-7037-4336-a678-906b1c72272d" name="sf-getBrands" />
+		<json-logger:logger doc:name="endTracePoint" doc:id="3368d6c6-e93c-4fcf-bd03-1c916f368f2a" config-ref="JSON_Logger_Config" message="After Brands Call" tracePoint="END"/>
+		<error-handler ref="assets-exp-common-error-handler-api" />
+    </flow>
+    <flow name="get:\collections:assets-exp-api-config">
+		<json-logger:logger doc:name="startTracePoint" doc:id="8a11149b-4e66-4635-9695-dc8e05903fe4" config-ref="JSON_Logger_Config" message="Before Collections Call"/>
+		<flow-ref doc:name="getCollections" doc:id="e174266f-2cf6-4421-b1d3-ccf5bde756ef" name="sf-getcollections"/>
+		<json-logger:logger doc:name="endTracePoint" doc:id="31daed20-88fe-40d1-a4c0-2856eca58c10" config-ref="JSON_Logger_Config" message="After Collection Call" tracePoint="END"/>
+		<error-handler ref="assets-exp-common-error-handler-api" />
+    </flow>
+
+
+	<error-handler name="assets-exp-common-error-handler-api" doc:id="7933891f-5ea3-4adf-a025-8e52b5f0b942" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="91210366-6653-4696-97d8-5c6d36cb8bf9" >
+			<error-handler-plugin:on-error doc:name="Process Error" doc:id="67806cee-84ce-4704-b257-b7372a5adb7e" previousErrors="#[vars.errorDetails default []]" config-ref="Error_Handler_Plugin_Config"/>
+			<set-variable value="#[payload]" doc:name="errorPayloadvariable" doc:id="714554c4-df63-45ac-bd60-a1f427d615e8" variableName="errorPayload"/>
+			<http:request method="POST" doc:name="SNOW-Request" doc:id="c9ce9f70-2fdf-4797-a4e6-d1b7b4cc1910" config-ref="HTTP_Request_Servicenow_configuration" path="${servicenow.sys.api.request.path}"/>
+			<set-payload value="#[vars.errorPayload]" doc:name="setPayload" doc:id="0f04a1ed-12d6-487d-bd9f-235641f056b2" />
+		</on-error-propagate>
+	</error-handler>
+	<flow name="get:\status:assets-exp-api-config" doc:id="993d3382-7136-4877-8920-fd2c97fae83b" >
+		<json-logger:logger doc:name="startTracePoint" doc:id="20a2096b-026a-45d5-90e1-8485ba52d1b2" config-ref="JSON_Logger_Config" message="Before Status Call"/>
+		<flow-ref doc:name="getStatus" doc:id="bc75775d-0294-467d-b21d-e2c4a0110700" name="sf-getStatus"/>
+		<json-logger:logger doc:name="endTracePoint" doc:id="ad4b6ee4-d259-4455-b70e-b924adbf9318" config-ref="JSON_Logger_Config" message="After Status Call" tracePoint="END"/>
+		<error-handler ref="assets-exp-common-error-handler-api" />
 	</flow>
-	              <sub-flow name="sf-create-servicenow-incident-http-call" doc:id="9c529bbe-5190-4465-a62a-a0f999f18251">
-                             <http:request method="POST" doc:name="HTTP Post:Servicenow create incident" doc:id="2484cb0d-74ab-4a21-9989-475ed0e34fa4"
-                                           sendCorrelationId="ALWAYS" path="${servicenow.request.path}" config-ref="SERVICENOW_REQUEST_CONFIG">
-			<reconnect frequency="${reconnection.frequency}" count="${reconnection.attempts}" />
 
-                             </http:request>
-                             <ee:transform doc:name="DW:Parse response" doc:id="38a0cc3e-fcda-4d5d-94dc-4398800035cc">
-                                           <ee:message>
-                                                          <ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-{
-sysId: payload.result.sys_id,
-number :payload.result.number
-//incidentUrl : p('servicenow.incident.url') ++ payload.result.sys_id
-}]]></ee:set-payload>
-                                           </ee:message>
-                                           <ee:variables>
-                                           </ee:variables>
-                             </ee:transform>
-                             <logger level="INFO" doc:name="End logger to create incident" doc:id="393fe243-9437-43dd-8083-8b774a38648c" message="#[payload]" />
-              </sub-flow>
-	<flow name="servicenow-sys-healthcheck" doc:id="f2fda0c0-ee4b-490d-88f0-ba4ac34b785a" >
-		<http:listener doc:name="Listener" doc:id="8a722eb4-b379-4ef4-b69b-5bee0d021d36" config-ref="HTTP_Listener_config" path="/"/>
-		<set-payload value="UP" doc:name="Set Payload" doc:id="37ecd999-4a93-4d4f-b528-bbd8fb14de8c" />
+
+	<flow name="post:\sharepoint:assets-exp-api-config" doc:id="7874fc33-b1ed-4bd4-840a-6e04594a6459" >
+		<json-logger:logger doc:name="startTracePoint" doc:id="8642b0fe-45e1-42ab-9003-8cacef106266" config-ref="JSON_Logger_Config" message="Before Sharepoint Call"/>
+		<flow-ref doc:name="publishSharepoint" doc:id="21aa60ff-a448-4d01-9f84-bb757cedfa94" name="sf-publishSharepoint"/>
+		<json-logger:logger doc:name="endTracePoint" doc:id="aa43cafc-78e6-4603-a254-557203979808" config-ref="JSON_Logger_Config" message="After Sharepoint Call" tracePoint="END"/>
+	</flow>
+	<flow name="assets-exp-api-healthcheck" doc:id="31b308f1-57b6-4b45-84a7-5b7671d535d7" >
+		<http:listener doc:name="Listener" doc:id="7b21bfbe-40ee-4a1d-bea7-dead4ebde4f8" config-ref="assets-exp-api-httpListenerConfig" path="${listnerhealthcheck}">
+			<http:response statusCode="#[vars.httpStatus default 200]" >
+				<http:headers ><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+			</http:response>
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[payload]]]></http:body>
+				<http:headers ><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+			</http:error-response>
+		</http:listener>
+		<set-payload value="UP" doc:name="Set Payload" doc:id="af90a463-4d92-46d1-8a03-68dacba29974" />
 	</flow>
 </mule>
