@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:error-handler-plugin="http://www.mulesoft.org/schema/mule/error-handler-plugin" xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
+http://www.mulesoft.org/schema/mule/error-handler-plugin http://www.mulesoft.org/schema/mule/error-handler-plugin/current/mule-error-handler-plugin.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+	    <sub-flow name="sf-getAssets" doc:id="fc9244ae-2a74-4dd3-8310-0c5553db047a" >
+		<set-variable value="#[attributes.queryParams.filename]" doc:name="filenameVariable" doc:id="bdf98caf-1a97-4112-b434-4be78afd5243" variableName="filename" />
+		<set-variable value="#[attributes.headers.correlationId]" doc:name="correlationIdVariable" doc:id="469f4b61-2719-4cce-90d8-41822f9cd079" variableName="correlationId" />
+		<set-variable value="#[attributes.headers.applicationName]" doc:name="applicationNameVariable" doc:id="c7462229-a111-4805-a438-48b22a2ccb23" variableName="applicationName" />
+		<set-variable value="#[attributes.headers.embedImage]" doc:name="embedImageVariable" doc:id="c1fa6cd7-083d-4e30-8036-e22bcfd6c343" variableName="embedImage" />
+		<json-logger:logger doc:name="beforeProcessRequest" doc:id="371aead1-212a-4e47-9475-bbe2f27c66e4" config-ref="JSON_Logger_Config" message="Before calling process API request" tracePoint="BEFORE_REQUEST"/>
+		<http:request method="GET" doc:name="processAPIRequest" doc:id="c0fc0deb-1f05-4196-a76c-ae06dd016416" config-ref="HTTP_Request_Process_API_configuration" path="${asset.proc.api.request.assetMetadatapath}" >
+			<reconnect frequency="${reconnection.frequency}" count="${reconnection.attempts}" />
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"embedImage" : vars.embedImage,
+	"correlationId" : vars.correlationId,
+	"applicationName" : vars.applicationName
+}]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"filename" : vars.filename
+}]]]></http:query-params>
+		</http:request>
+		<json-logger:logger doc:name="afterProcessRequest" doc:id="e13aef30-9acd-4872-8c9a-98efa22449bb" config-ref="JSON_Logger_Config" message="After calling process API request" tracePoint="AFTER_REQUEST"/>
+		<ee:transform doc:name="finalPayload" doc:id="55569298-0c15-4153-9559-bf401d555fd0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"assets-metadata":
+
+payload
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	</mule>
