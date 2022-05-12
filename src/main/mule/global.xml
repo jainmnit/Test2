@@ -21,13 +21,13 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<configuration-properties doc:name="Configuration properties" doc:id="63907493-2ca1-45bc-8f55-bf83bef95586" file="assets-exp-config-${mule.env}.yaml" />
 	<http:request-config name="HTTP_Request_Servicenow_configuration" doc:name="HTTP Request configuration" doc:id="a984d5da-1a0e-4ba1-ab7d-6c3b06794d4b" responseTimeout="${response.Timeout}">
 		<http:request-connection host="${servicenow.sys.api.request.host}" port="${servicenow.sys.api.request.port}" connectionIdleTimeout="${connection.idle.timeout}"/>
-		<reconnection >
+		<reconnection>
 				<reconnect count="3" frequency="${frequency}"/>
 		</reconnection>
 	</http:request-config>
 	<http:request-config name="HTTP_Request_sharepoint_sys_configuration" doc:name="HTTP Request configuration" doc:id="558529da-694c-4050-b877-44b4c8050409" basePath="${sharepoint.sys.api.request.basepath}">
 		<http:request-connection host="${sharepoint.sys.api.request.host}" port="${sharepoint.sys.api.request.port}" connectionIdleTimeout="${sharepoint.sys.api.request.idletimeout}"/>
-		<reconnection >
+		<reconnection>
 				<reconnect count="${count}" frequency="4000"/>
 			</reconnection>
 	</http:request-config>
