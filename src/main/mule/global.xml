@@ -10,7 +10,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
         <http:listener-connection host="0.0.0.0" port="${listnerport}" protocol="HTTPS"/>
     </http:listener-config>
 	<http:listener-config name="assets-exp-api-httpListenerConfig">
-        <http:listener-connection host="0.0.0.0" port="933" protocol="HTTPS"/>
+        <http:listener-connection host="0.0.0.0" port="${listnerport}" protocol="HTTPS"/>
     </http:listener-config>
    <http:request-config name="HTTP_Request_Process_API_configuration" doc:name="HTTP Request configuration" doc:id="0ed24ea3-b41c-4233-92c6-3296397ff727" basePath="${asset.proc.api.request.basepath}" responseTimeout="${response.Timeout}">
 		<http:request-connection host="${asset.proc.api.request.host}" port="${asset.proc.api.request.port}" connectionIdleTimeout="${asset.proc.api.request.idletimeout}">
@@ -18,12 +18,13 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	</http:request-config>
 	<apikit:config name="assets-exp-api-config" api="assets-exp-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
 	<configuration-properties doc:name="Configuration properties" doc:id="63907493-2ca1-45bc-8f55-bf83bef95586" file="assets-exp-config-${mule.env}.yaml" />
-	<http:request-config name="HTTP_Request_Servicenow_configuration" doc:name="HTTP Request configuration" doc:id="a984d5da-1a0e-4ba1-ab7d-6c3b06794d4b" responseTimeout="45600">
+	<http:request-config name="HTTP_Request_Servicenow_configuration" doc:name="HTTP Request configuration" doc:id="a984d5da-1a0e-4ba1-ab7d-6c3b06794d4b" responseTimeout="${response.Timeout}">
 		<http:request-connection host="${servicenow.sys.api.request.host}" port="${servicenow.sys.api.request.port}" connectionIdleTimeout="${connection.idle.timeout}"/>
 	</http:request-config>
 	<http:request-config name="HTTP_Request_sharepoint_sys_configuration" doc:name="HTTP Request configuration" doc:id="558529da-694c-4050-b877-44b4c8050409" basePath="${sharepoint.sys.api.request.basepath}">
 		<http:request-connection host="${sharepoint.sys.api.request.host}" port="${sharepoint.sys.api.request.port}" connectionIdleTimeout="${sharepoint.sys.api.request.idletimeout}"/>
 	</http:request-config>
 	<api-gateway:autodiscovery apiId="${autodiscovery.api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="1e6b22c6-6fae-4134-b184-ac854ef204d3" flowRef="assets-exp-api-main" />
+	<api-gateway:autodiscovery apiId="323232" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="1e6b22c6-6fae-4134-b184-ac854ef204d3" flowRef="assets-exp-api-main" />
 	
 </mule>
