@@ -25,6 +25,5 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 		<http:request-connection host="${sharepoint.sys.api.request.host}" port="${sharepoint.sys.api.request.port}" connectionIdleTimeout="${sharepoint.sys.api.request.idletimeout}"/>
 	</http:request-config>
 	<api-gateway:autodiscovery apiId="${autodiscovery.api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="1e6b22c6-6fae-4134-b184-ac854ef204d3" flowRef="assets-exp-api-main" />
-	<api-gateway:autodiscovery apiId="323232" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="1e6b22c6-6fae-4134-b184-ac854ef204d3" flowRef="assets-exp-api-main" />
 	
 </mule>
