@@ -4,6 +4,9 @@ http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/m
 http://www.mulesoft.org/schema/mule/error-handler-plugin http://www.mulesoft.org/schema/mule/error-handler-plugin/current/mule-error-handler-plugin.xsd
 http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+	<http:listener-config name="assets-exp-api-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="${listnerport}" />
+    </http:listener-config>
 	<flow name="assets-exp-api-main" doc:id="5732e371-bc2f-4b6f-88fe-6d900c3526f5">
         <http:listener config-ref="assets-exp-api-httpListenerConfig" path="${listnerbasepath}">
             <http:response statusCode="#[vars.httpStatus default 200]">
