@@ -7,6 +7,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<http:listener-config name="assets-exp-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="${listnerport}" />
     </http:listener-config>
+	<apikit:config name="assets-exp-api-config" api="assets-exp-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
 	<flow name="assets-exp-api-main" doc:id="5732e371-bc2f-4b6f-88fe-6d900c3526f5">
         <http:listener config-ref="assets-exp-api-httpListenerConfig" path="${listnerbasepath}">
             <http:response statusCode="#[vars.httpStatus default 200]">
