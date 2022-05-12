@@ -9,7 +9,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<http:listener-config name="assets-exp-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="${listnerport}" />
     </http:listener-config>
-   <http:request-config name="HTTP_Request_Process_API_configuration" doc:name="HTTP Request configuration" doc:id="0ed24ea3-b41c-4233-92c6-3296397ff727" basePath="${asset.proc.api.request.basepath}" responseTimeout="${response.timeout}">
+   <http:request-config name="HTTP_Request_Process_API_configuration" doc:name="HTTP Request configuration" doc:id="0ed24ea3-b41c-4233-92c6-3296397ff727" basePath="${asset.proc.api.request.basepath}" responseTimeout="67773">
 		<http:request-connection host="${asset.proc.api.request.host}" port="${asset.proc.api.request.port}" connectionIdleTimeout="${asset.proc.api.request.idletimeout}">
 		</http:request-connection>
 	</http:request-config>
