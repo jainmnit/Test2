@@ -52,12 +52,14 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 
 
 	<error-handler name="assets-exp-common-error-handler-api" doc:id="7933891f-5ea3-4adf-a025-8e52b5f0b942" >
-		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="91210366-6653-4696-97d8-5c6d36cb8bf9" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="91210366-6653-4696-97d8-5c6d36cb8bf9" type="APIKIT:BAD_REQUEST" >
 			<error-handler-plugin:on-error doc:name="Process Error" doc:id="67806cee-84ce-4704-b257-b7372a5adb7e" previousErrors="#[vars.errorDetails default []]" config-ref="Error_Handler_Plugin_Config"/>
 			<set-variable value="#[payload]" doc:name="errorPayloadvariable" doc:id="714554c4-df63-45ac-bd60-a1f427d615e8" variableName="errorPayload"/>
 			<http:request method="POST" doc:name="SNOW-Request" doc:id="c9ce9f70-2fdf-4797-a4e6-d1b7b4cc1910" config-ref="HTTP_Request_Servicenow_configuration" path="${servicenow.sys.api.request.path}"/>
 			<set-payload value="#[vars.errorPayload]" doc:name="setPayload" doc:id="0f04a1ed-12d6-487d-bd9f-235641f056b2" />
 		</on-error-propagate>
+		<on-error-propagate type="APIKIT:NOT_FOUND"></on-error-propagate>
+		<on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED"></on-error-propagate>
 	</error-handler>
 	<flow name="get:\status:assets-exp-api-config" doc:id="993d3382-7136-4877-8920-fd2c97fae83b" >
 		<json-logger:logger doc:name="startTracePoint" doc:id="20a2096b-026a-45d5-90e1-8485ba52d1b2" config-ref="JSON_Logger_Config" message="Before Status Call"/>
