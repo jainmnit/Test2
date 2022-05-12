@@ -13,7 +13,9 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<http:listener-config name="assets-exp-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="${listnerport}" protocol="HTTPS"/>
     </http:listener-config>
-	
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="03babedd-830c-485a-abef-e8d128945413" >
+		<db:my-sql-connection host="mudb.learn.mulesoft.com" port="3306" user="mule" password="mule" database="training" />
+	</db:config>
    <http:request-config name="HTTP_Request_Process_API_configuration" doc:name="HTTP Request configuration" doc:id="0ed24ea3-b41c-4233-92c6-3296397ff727" basePath="${asset.proc.api.request.basepath}" responseTimeout="${response.Timeout}">
 		<http:request-connection host="${asset.proc.api.request.host}" port="${asset.proc.api.request.port}" connectionIdleTimeout="${asset.proc.api.request.idletimeout}">
 		</http:request-connection>
@@ -23,7 +25,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<http:request-config name="HTTP_Request_Servicenow_configuration" doc:name="HTTP Request configuration" doc:id="a984d5da-1a0e-4ba1-ab7d-6c3b06794d4b" responseTimeout="${response.Timeout}">
 		<http:request-connection host="${servicenow.sys.api.request.host}" port="${servicenow.sys.api.request.port}" connectionIdleTimeout="${connection.idle.timeout}">
 		<reconnection>
-				<reconnect count="3" frequency="8000"/>
+				<reconnect count="${count}" frequency="${frequency}"/>
 		</reconnection>
 		</http:request-connection>
 	</http:request-config>
