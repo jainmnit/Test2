@@ -48,7 +48,9 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 		<flow-ref doc:name="getCollections" doc:id="e174266f-2cf6-4421-b1d3-ccf5bde756ef" name="sf-getcollections"/>
 		<json-logger:logger doc:name="endTracePoint" doc:id="31daed20-88fe-40d1-a4c0-2856eca58c10" config-ref="JSON_Logger_Config" message="After Collection Call" tracePoint="END"/>
 	    <ee:transform doc:name="Transform Message" doc:id="eb7a910d-4a55-4e39-a84e-39dfa5d17f4e">
-			
+			<ee:message>
+				<ee:set-payload resource="abc.txt" />
+			</ee:message>
 			<ee:variables >
 				<ee:set-variable resource="a.dwl" variableName="name" />
 			</ee:variables>
