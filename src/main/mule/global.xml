@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:error-handler-plugin="http://www.mulesoft.org/schema/mule/error-handler-plugin" xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
+<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:error-handler-plugin="http://www.mulesoft.org/schema/mule/error-handler-plugin" xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
 http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
 http://www.mulesoft.org/schema/mule/error-handler-plugin http://www.mulesoft.org/schema/mule/error-handler-plugin/current/mule-error-handler-plugin.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
 http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
     <json-logger:config name="JSON_Logger_Config" doc:name="JSON Logger Config" doc:id="6a909963-ca4e-4b2f-a315-4fcb51dbd31c" environment="${mule.env}" applicationName="${application.name}" applicationVersion="${application.version}"/>
@@ -22,15 +23,12 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<http:request-config name="HTTP_Request_Servicenow_configuration" doc:name="HTTP Request configuration" doc:id="a984d5da-1a0e-4ba1-ab7d-6c3b06794d4b" responseTimeout="${response.Timeout}">
 		<http:request-connection host="${servicenow.sys.api.request.host}" port="${servicenow.sys.api.request.port}" connectionIdleTimeout="${connection.idle.timeout}">
 		<reconnection>
-				<reconnect count="3" frequency="${frequency}"/>
+				<reconnect count="3" frequency="8000"/>
 		</reconnection>
 		</http:request-connection>
 	</http:request-config>
 	<http:request-config name="HTTP_Request_sharepoint_sys_configuration" doc:name="HTTP Request configuration" doc:id="558529da-694c-4050-b877-44b4c8050409" basePath="${sharepoint.sys.api.request.basepath}">
 		<http:request-connection host="${sharepoint.sys.api.request.host}" port="${sharepoint.sys.api.request.port}" connectionIdleTimeout="${sharepoint.sys.api.request.idletimeout}">
-		<reconnection>
-				<reconnect count="${count}" frequency="4000"/>
-			</reconnection>
 		</http:request-connection>
 	</http:request-config>
 	<api-gateway:autodiscovery apiId="${autodiscovery.api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="1e6b22c6-6fae-4134-b184-ac854ef204d3" flowRef="assets-exp-api-main" />
