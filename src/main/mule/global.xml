@@ -34,7 +34,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<http:request-config name="HTTP_Request_Servicenow_configuration" doc:name="HTTP Request configuration" doc:id="a984d5da-1a0e-4ba1-ab7d-6c3b06794d4b" responseTimeout="${response.Timeout}">
 		<http:request-connection host="${servicenow.sys.api.request.host}" port="${servicenow.sys.api.request.port}" connectionIdleTimeout="${connection.idle.timeout}">
 		<reconnection>
-				<reconnect count="5" frequency="${frequency}"/>
+				<reconnect frequency="${frequency}"/>
 		</reconnection>
 		</http:request-connection>
 	</http:request-config>
