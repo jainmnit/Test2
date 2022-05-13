@@ -20,7 +20,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="20eb4cdc-d3dc-4536-b0ee-70e509721b10" >
 		<http:request-connection >
 			<reconnection >
-				<reconnect frequency="${frequency}" count="${count}" />
+				<reconnect frequency="1234" count="${count}" />
 			</reconnection>
 		</http:request-connection>
 	</http:request-config>
