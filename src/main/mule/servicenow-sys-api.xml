@@ -41,6 +41,14 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 		<json-logger:logger doc:name="startTracePoint" doc:id="3ab6c164-70ad-4aaa-ab66-76b7a6cdba53" config-ref="JSON_Logger_Config" message="Before Brands Call"/>
 		<flow-ref doc:name="getBrands" doc:id="d701595c-7037-4336-a678-906b1c72272d" name="sf-getBrands" />
 		<json-logger:logger doc:name="endTracePoint" doc:id="3368d6c6-e93c-4fcf-bd03-1c916f368f2a" config-ref="JSON_Logger_Config" message="After Brands Call" tracePoint="END"/>
+		 <ee:transform doc:name="Transform Message" doc:id="eb7a910d-4a55-4e39-a84e-39dfa5d17f4e">
+			<ee:message>
+				<ee:set-payload resource="abc.txt" />
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable resource="a" variableName="name" />
+			</ee:variables>
+		</ee:transform>
 		<error-handler ref="assets-exp-common-error-handler-api" />
     </flow>
     <flow name="get:\collections:assets-exp-api-config">
@@ -49,7 +57,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 		<json-logger:logger doc:name="endTracePoint" doc:id="31daed20-88fe-40d1-a4c0-2856eca58c10" config-ref="JSON_Logger_Config" message="After Collection Call" tracePoint="END"/>
 	    <ee:transform doc:name="Transform Message" doc:id="eb7a910d-4a55-4e39-a84e-39dfa5d17f4e">
 			<ee:message>
-				<ee:set-payload resource="abc.txt" />
+				<ee:set-payload resource="a.dwl" />
 			</ee:message>
 			<ee:variables >
 				<ee:set-variable resource="a.dwl" variableName="name" />
