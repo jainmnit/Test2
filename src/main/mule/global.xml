@@ -39,7 +39,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 		</reconnection>
 		</http:request-connection>
 	</http:request-config>
-	<http:request-config name="HTTP_Request_sharepoint_sys_configuration" doc:name="HTTP Request configuration" doc:id="558529da-694c-4050-b877-44b4c8050409" basePath="${sharepoint.sys.api.request.basepath}">
+	<http:request-config name="HTTP_Request_sharepoint_sys_configuration" doc:name="HTTP Request configuration" doc:id="558529da-694c-4050-b877-44b4c8050409" basePath="${sharepoint.sys.api.request.basepath}" responseTimeout="23232">
 		<http:request-connection host="${sharepoint.sys.api.request.host}" port="${sharepoint.sys.api.request.port}" connectionIdleTimeout="${sharepoint.sys.api.request.idletimeout}">
 		</http:request-connection>
 	</http:request-config>
