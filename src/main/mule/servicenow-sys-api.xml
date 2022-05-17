@@ -4,12 +4,7 @@ http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/m
 http://www.mulesoft.org/schema/mule/error-handler-plugin http://www.mulesoft.org/schema/mule/error-handler-plugin/current/mule-error-handler-plugin.xsd
 http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
-	<http:listener-config name="assets-exp-api-httpListenerConfig">
-        <http:listener-connection host="0.0.0.0" port="${listnerport}" protocol="HTTPS"/>
-    </http:listener-config>
-	<apikit:config name="assets-exp-api-config" api="assets-exp-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
-	 <json-logger:config name="JSON_Logger_Config" doc:name="JSON Logger Config" doc:id="6a909963-ca4e-4b2f-a315-4fcb51dbd31c" environment="${mule.env}" applicationName="${application.name}" applicationVersion="${application.version}"/>
-	<flow name="assets-exp-api-main" doc:id="5732e371-bc2f-4b6f-88fe-6d900c3526f5">
+ <flow name="assets-exp-api-main" doc:id="5732e371-bc2f-4b6f-88fe-6d900c3526f5">
         <http:listener config-ref="assets-exp-api-httpListenerConfig" path="${listnerbasepath}">
             <http:response statusCode="#[vars.httpStatus default 200]">
                 <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
@@ -35,71 +30,20 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
         <apikit:console config-ref="assets-exp-api-config" />
 		<error-handler ref="assets-exp-common-error-handler-api" />
     </flow>
-	<flow name="assets-exp-api-console">
-        <http:listener config-ref="assets-exp-api-httpListenerConfig" path="/console/*">
-            <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
-            </http:response>
-            <http:error-response statusCode="#[vars.httpStatus default 500]">
-                <http:body>#[payload]</http:body>
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
-            </http:error-response>
-        </http:listener>
-        <apikit:console config-ref="assets-exp-api-config" />
-		<error-handler ref="assets-exp-common-error-handler-api" />
-    </flow>
-	<flow name="assets-exp-api-console">
-        <http:listener config-ref="assets-exp-api-httpListenerConfig" path="/console/*">
-            <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
-            </http:response>
-            <http:error-response statusCode="#[vars.httpStatus default 500]">
-                <http:body>#[payload]</http:body>
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
-            </http:error-response>
-        </http:listener>
-        <apikit:console config-ref="assets-exp-api-config" />
-		<error-handler ref="assets-exp-common-error-handler-api" />
-    </flow>
-	<flow name="assets-exp-api-console">
-        <http:listener config-ref="assets-exp-api-httpListenerConfig" path="/console/*">
-            <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
-            </http:response>
-            <http:error-response statusCode="#[vars.httpStatus default 500]">
-                <http:body>#[payload]</http:body>
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
-            </http:error-response>
-        </http:listener>
-        <apikit:console config-ref="assets-exp-api-config" />
-		<error-handler ref="assets-exp-common-error-handler-api" />
-    </flow>
-	<flow name="assets-exp-api-console">
-        <http:listener config-ref="assets-exp-api-httpListenerConfig" path="/console/*">
-            <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
-            </http:response>
-            <http:error-response statusCode="#[vars.httpStatus default 500]">
-                <http:body>#[payload]</http:body>
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
-            </http:error-response>
-        </http:listener>
-        <apikit:console config-ref="assets-exp-api-config" />
-		<error-handler ref="assets-exp-common-error-handler-api" />
-    </flow>
-	<flow name="assets-exp-api-console">
-        <http:listener config-ref="assets-exp-api-httpListenerConfig" path="/console/*">
-            <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
-            </http:response>
-            <http:error-response statusCode="#[vars.httpStatus default 500]">
-                <http:body>#[payload]</http:body>
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
-            </http:error-response>
-        </http:listener>
-        <apikit:console config-ref="assets-exp-api-config" />
-		<error-handler ref="assets-exp-common-error-handler-api" />
-    </flow>
+	
+	<error-handler name="assets-exp-common-error-handler-api" doc:id="7933891f-5ea3-4adf-a025-8e52b5f0b942" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="91210366-6653-4696-97d8-5c6d36cb8bf9" type="APIKIT:BAD_REQUEST" >
+			<error-handler-plugin:on-error doc:name="Process Error" doc:id="67806cee-84ce-4704-b257-b7372a5adb7e" previousErrors="#[vars.errorDetails default []]" config-ref="Error_Handler_Plugin_Config"/>
+			<set-variable value="#[payload]" doc:name="errorPayloadvariable" doc:id="714554c4-df63-45ac-bd60-a1f427d615e8" variableName="errorPayload"/>
+			<http:request method="POST" doc:name="SNOW-Request" doc:id="c9ce9f70-2fdf-4797-a4e6-d1b7b4cc1910" config-ref="HTTP_Request_Servicenow_configuration" path="${servicenow.sys.api.request.path}"/>
+			<set-payload value="#[vars.errorPayload]" doc:name="setPayload" doc:id="0f04a1ed-12d6-487d-bd9f-235641f056b2" />
+		</on-error-propagate>
+		<on-error-propagate type="APIKIT:NOT_FOUND"></on-error-propagate>
+		<on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED"></on-error-propagate>
+	</error-handler>
+
+	
+    
 	<flow name="get:\assets:assets-exp-api-config">
 		<json-logger:logger doc:name="startTracePoint" doc:id="59a1fe58-d275-4505-9083-1acc9e44ef2a" config-ref="JSON_Logger_Config" message="Before Assets Call"/>
 		<flow-ref doc:name="getAssets" doc:id="0301e503-a5f3-4dd0-b215-2b4b7334cf93" name="sf-getAssets"/>
