@@ -14,6 +14,9 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<http:listener-config name="assets-exp-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="${listnerport}" protocol="HTTPS"/>
     </http:listener-config>
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="4cf8770f-b141-4e49-b7c9-ba886d0be2c2" file="assets-exp-config-${mule.env}.yaml" key="${key}">
+		<secure-properties:encrypt useRandomIVs="true" algorithm="CAST5"/>
+		</secure-properties:config>
 	<configuration-properties doc:name="Configuration properties" doc:id="63907493-2ca1-45bc-8f55-bf83bef95586" file="assets-exp-config-${mule.env}.yaml" />
 	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="20eb4cdc-d3dc-4536-b0ee-70e509721b10" >
 		<http:request-connection >
