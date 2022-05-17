@@ -14,9 +14,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<http:listener-config name="assets-exp-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="${listnerport}" protocol="HTTPS"/>
     </http:listener-config>
-	<db:config name="Database_Config" doc:name="Database Config" doc:id="03babedd-830c-485a-abef-e8d128945413" >
-		<db:my-sql-connection host="${host}" port="3306" user="mule" password="mule" database="training" />
-	</db:config>
+	
 	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="20eb4cdc-d3dc-4536-b0ee-70e509721b10" >
 		<http:request-connection >
 			<reconnection >
