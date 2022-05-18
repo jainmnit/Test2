@@ -9,7 +9,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
     <json-logger:config name="JSON_Logger_Config" doc:name="JSON Logger Config" doc:id="6a909963-ca4e-4b2f-a315-4fcb51dbd31c" environment="${mule.env}" applicationName="${application.name}" applicationVersion="${application.version}"/>
 	<error-handler-plugin:config name="Error_Handler_Plugin_Config" doc:name="Error Handler Plugin Config" doc:id="f28291e1-c101-4aed-aa4e-8c99b85748ce" apiName="#[Mule::p('application.name')]" apiVersion="#[Mule::p('application.version')]" />
 	<http:listener-config name="assets-exp-api-httpListenerConfig">
-        <http:listener-connection host="0.0.0.0" port="${listnerport}" protocol="HTTPS"/>
+        <http:listener-connection host="${host}" port="${listnerport}" protocol="HTTPS"/>
     </http:listener-config>
 	<http:listener-config name="assets-exp-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="${listnerport}" protocol="HTTPS"/>
